@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Marketplace CRM | Omnichannel Business Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc;
+      }
+
+      .sidebar {
+        transition: all 0.3s ease;
+      }
+
+      .chart-container {
+        height: 250px;
+      }
+
+      .ai-response {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .marketplace-btn {
+        transition: all 0.2s ease;
+      }
+
+      .marketplace-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .ai-message {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-out;
+      }
+
+      .ai-message.visible {
+        max-height: 500px;
+      }
+
+      /* Page content animations */
+      .page-content {
+        display: none;
+        animation: fadeInUp 0.3s ease-out;
+      }
+
+      .page-content.active {
+        display: block;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .nav-item {
+        transition: all 0.2s ease;
+      }
+
+      .nav-item.active {
+        background-color: #4338ca;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+      <!-- Sidebar Navigation -->
+      <div
+        class="sidebar bg-indigo-700 text-white w-64 flex-shrink-0 hidden md:block"
+      >
+        <div class="p-4 flex items-center space-x-2">
+          <i class="fas fa-brain text-indigo-200 text-2xl"></i>
+          <h1 class="text-xl font-bold">MarketAI CRM</h1>
+        </div>
+        <nav class="mt-8">
+          <div
+            class="nav-item px-4 py-3 cursor-pointer active"
+            data-page="dashboard"
+          >
+            <i class="fas fa-chart-line mr-3"></i>
+            <span>Dashboard</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="marketplaces"
+          >
+            <i class="fas fa-store mr-3"></i>
+            <span>Marketplaces</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="products"
+          >
+            <i class="fas fa-box-open mr-3"></i>
+            <span>Products</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="analytics"
+          >
+            <i class="fas fa-chart-pie mr-3"></i>
+            <span>Analytics</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="ai-assistant"
+          >
+            <i class="fas fa-comment-dots mr-3"></i>
+            <span>AI Assistant</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="settings"
+          >
+            <i class="fas fa-cog mr-3"></i>
+            <span>Settings</span>
+          </div>
+          <div class="absolute bottom-0 w-full p-4">
+            <div class="flex items-center">
+              <div
+                class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-user"></i>
+              </div>
+              <div>
+                <div class="text-sm font-medium">John Doe</div>
+                <div class="text-xs text-indigo-200">Premium User</div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Mobile header -->
+      <div
+        class="md:hidden bg-indigo-700 text-white p-4 flex justify-between items-center w-full fixed top-0 z-40"
+      >
+        <div class="flex items-center space-x-2">
+          <i class="fas fa-brain text-indigo-200 text-2xl"></i>
+          <h1 class="text-xl font-bold">MarketAI CRM</h1>
+        </div>
+        <button id="mobileMenuBtn" class="text-white">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+
+      <!-- Mobile sidebar (hidden by default) -->
+      <div
+        id="mobileSidebar"
+        class="sidebar bg-indigo-700 text-white w-64 fixed h-full z-50 -left-64 md:hidden"
+      >
+        <div class="p-4 flex items-center space-x-2">
+          <i class="fas fa-brain text-indigo-200 text-2xl"></i>
+          <h1 class="text-xl font-bold">MarketAI CRM</h1>
+        </div>
+        <nav class="mt-8">
+          <div
+            class="nav-item px-4 py-3 cursor-pointer active"
+            data-page="dashboard"
+          >
+            <i class="fas fa-chart-line mr-3"></i>
+            <span>Dashboard</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="marketplaces"
+          >
+            <i class="fas fa-store mr-3"></i>
+            <span>Marketplaces</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="products"
+          >
+            <i class="fas fa-box-open mr-3"></i>
+            <span>Products</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="analytics"
+          >
+            <i class="fas fa-chart-pie mr-3"></i>
+            <span>Analytics</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="ai-assistant"
+          >
+            <i class="fas fa-comment-dots mr-3"></i>
+            <span>AI Assistant</span>
+          </div>
+          <div
+            class="nav-item px-4 py-3 hover:bg-indigo-600 cursor-pointer"
+            data-page="settings"
+          >
+            <i class="fas fa-cog mr-3"></i>
+            <span>Settings</span>
+          </div>
+          <div class="absolute bottom-0 w-full p-4">
+            <div class="flex items-center">
+              <div
+                class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-user"></i>
+              </div>
+              <div>
+                <div class="text-sm font-medium">John Doe</div>
+                <div class="text-xs text-indigo-200">Premium User</div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex-1 overflow-auto pt-16 md:pt-0">
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page-content active p-6">
+          <!-- Header -->
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Dashboard Overview</h2>
+            <div class="flex space-x-2">
+              <button
+                class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+              >
+                <i class="fas fa-plus mr-2"></i> Add Shop
+              </button>
+              <button
+                class="bg-white border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50"
+              >
+                <i class="fas fa-download mr-2"></i> Export
+              </button>
+            </div>
+          </div>
+
+          <!-- Connected Marketplaces -->
+          <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-700">
+              Connected Marketplaces
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div
+                class="marketplace-btn bg-white border-2 border-blue-200 rounded-lg p-4 flex flex-col items-center cursor-pointer hover:border-blue-400 shadow-sm"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/0/08/Shopee_logo.svg"
+                  alt="Shopee"
+                  class="h-10 mb-2"
+                />
+                <span class="text-sm text-gray-600">Connected</span>
+                <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                  <div
+                    class="bg-green-500 h-1 rounded-full"
+                    style="width: 100%"
+                  ></div>
+                </div>
+              </div>
+              <div
+                class="marketplace-btn bg-white border-2 border-gray-200 rounded-lg p-4 flex flex-col items-center cursor-pointer hover:border-yellow-400 shadow-sm"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/8/85/Tokopedia.svg"
+                  alt="Tokopedia"
+                  class="h-10 mb-2"
+                />
+                <span class="text-sm text-gray-600">Connect</span>
+                <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                  <div
+                    class="bg-gray-300 h-1 rounded-full"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+              <div
+                class="marketplace-btn bg-white border-2 border-gray-200 rounded-lg p-4 flex flex-col items-center cursor-pointer hover:border-green-400 shadow-sm"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Lazada_logo.svg"
+                  alt="Lazada"
+                  class="h-10 mb-2"
+                />
+                <span class="text-sm text-gray-600">Connect</span>
+                <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                  <div
+                    class="bg-gray-300 h-1 rounded-full"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+              <div
+                class="marketplace-btn bg-white border-2 border-gray-200 rounded-lg p-4 flex flex-col items-center cursor-pointer hover:border-red-400 shadow-sm"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/7/77/Bukalapak_logo.svg"
+                  alt="Bukalapak"
+                  class="h-10 mb-2"
+                />
+                <span class="text-sm text-gray-600">Connect</span>
+                <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                  <div
+                    class="bg-gray-300 h-1 rounded-full"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Overview -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-gray-500 font-medium">Total Revenue</h3>
+                  <p class="text-2xl font-bold text-gray-800 mt-1">
+                    Rp 12,450,000
+                  </p>
+                  <p class="text-green-500 text-sm mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i> 24% from last month
+                  </p>
+                </div>
+                <div class="bg-indigo-100 p-3 rounded-lg">
+                  <i class="fas fa-wallet text-indigo-600 text-xl"></i>
+                </div>
+              </div>
+              <div class="chart-container mt-4" id="revenueChart">
+                <!-- Chart will be rendered here -->
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-gray-500 font-medium">Total Orders</h3>
+                  <p class="text-2xl font-bold text-gray-800 mt-1">1,248</p>
+                  <p class="text-green-500 text-sm mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i> 12% from last month
+                  </p>
+                </div>
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <i class="fas fa-shopping-bag text-green-600 text-xl"></i>
+                </div>
+              </div>
+              <div class="chart-container mt-4" id="ordersChart">
+                <!-- Chart will be rendered here -->
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-gray-500 font-medium">Conversion Rate</h3>
+                  <p class="text-2xl font-bold text-gray-800 mt-1">3.2%</p>
+                  <p class="text-red-500 text-sm mt-1">
+                    <i class="fas fa-arrow-down mr-1"></i> 0.5% from last month
+                  </p>
+                </div>
+                <div class="bg-purple-100 p-3 rounded-lg">
+                  <i class="fas fa-percentage text-purple-600 text-xl"></i>
+                </div>
+              </div>
+              <div class="chart-container mt-4" id="conversionChart">
+                <!-- Chart will be rendered here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Performance -->
+          <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-semibold text-gray-700">
+                Top Performing Products
+              </h3>
+              <select
+                class="border border-gray-300 rounded-md px-3 py-1 text-sm"
+              >
+                <option>Last 7 days</option>
+                <option selected>Last 30 days</option>
+                <option>Last 90 days</option>
+              </select>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Product
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Sales
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Revenue
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Marketplace
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Rating
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div
+                          class="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-md flex items-center justify-center"
+                        >
+                          <i class="fas fa-box text-indigo-600"></i>
+                        </div>
+                        <div class="ml-4">
+                          <div class="text-sm font-medium text-gray-900">
+                            Wireless Earbuds
+                          </div>
+                          <div class="text-sm text-gray-500">SKU: WB-001</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">278</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">Rp 4,162,000</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
+                        >Shopee</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <span class="ml-1 text-sm">4.8/5</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div
+                          class="flex-shrink-0 h-10 w-10 bg-green-100 rounded-md flex items-center justify-center"
+                        >
+                          <i class="fas fa-box text-green-600"></i>
+                        </div>
+                        <div class="ml-4">
+                          <div class="text-sm font-medium text-gray-900">
+                            Smart Watch
+                          </div>
+                          <div class="text-sm text-gray-500">SKU: SW-002</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">152</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">Rp 3,040,000</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
+                        >Shopee</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <span class="ml-1 text-sm">4.5/5</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Marketplaces Page -->
+        <div id="marketplaces-page" class="page-content p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">
+              Marketplace Management
+            </h2>
+            <button
+              class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+            >
+              <i class="fas fa-plus mr-2"></i> Connect New Marketplace
+            </button>
+          </div>
+
+          <!-- Connected Marketplaces Grid -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6"
+          >
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div
+                class="p-6 bg-gradient-to-r from-orange-400 to-orange-500 text-white"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/0/08/Shopee_logo.svg"
+                  alt="Shopee"
+                  class="h-12 mb-3 filter brightness-0 invert"
+                />
+                <h3 class="text-xl font-semibold">Shopee</h3>
+                <p class="text-sm opacity-90">Connected 3 months ago</p>
+              </div>
+              <div class="p-6">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <p class="text-gray-500 text-sm">Revenue</p>
+                    <p class="text-lg font-semibold">Rp 12.4M</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 text-sm">Orders</p>
+                    <p class="text-lg font-semibold">1,248</p>
+                  </div>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-green-500 text-sm"
+                    ><i class="fas fa-circle text-xs mr-1"></i> Active</span
+                  >
+                  <button
+                    class="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
+                  >
+                    Manage
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div
+                class="p-6 bg-gradient-to-r from-green-400 to-green-500 text-white"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/8/85/Tokopedia.svg"
+                  alt="Tokopedia"
+                  class="h-12 mb-3 filter brightness-0 invert"
+                />
+                <h3 class="text-xl font-semibold">Tokopedia</h3>
+                <p class="text-sm opacity-90">Not Connected</p>
+              </div>
+              <div class="p-6">
+                <p class="text-gray-600 mb-4">
+                  Connect your Tokopedia store to sync products and manage
+                  orders.
+                </p>
+                <button
+                  class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600"
+                >
+                  <i class="fas fa-link mr-2"></i> Connect Store
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div
+                class="p-6 bg-gradient-to-r from-blue-400 to-blue-500 text-white"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Lazada_logo.svg"
+                  alt="Lazada"
+                  class="h-12 mb-3 filter brightness-0 invert"
+                />
+                <h3 class="text-xl font-semibold">Lazada</h3>
+                <p class="text-sm opacity-90">Not Connected</p>
+              </div>
+              <div class="p-6">
+                <p class="text-gray-600 mb-4">
+                  Integrate with Lazada to expand your reach across Southeast
+                  Asia.
+                </p>
+                <button
+                  class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+                >
+                  <i class="fas fa-link mr-2"></i> Connect Store
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Marketplace Performance Comparison -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-700">
+              Performance Comparison
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="min-w-full">
+                <thead>
+                  <tr class="border-b">
+                    <th class="text-left py-3 px-4">Marketplace</th>
+                    <th class="text-center py-3 px-4">Status</th>
+                    <th class="text-center py-3 px-4">Products</th>
+                    <th class="text-center py-3 px-4">Orders (30d)</th>
+                    <th class="text-center py-3 px-4">Revenue (30d)</th>
+                    <th class="text-center py-3 px-4">Avg Rating</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="py-3 px-4 flex items-center">
+                      <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/0/08/Shopee_logo.svg"
+                        alt="Shopee"
+                        class="h-8 mr-3"
+                      />
+                      Shopee
+                    </td>
+                    <td class="text-center py-3 px-4">
+                      <span
+                        class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs"
+                        >Active</span
+                      >
+                    </td>
+                    <td class="text-center py-3 px-4">124</td>
+                    <td class="text-center py-3 px-4">1,248</td>
+                    <td class="text-center py-3 px-4">Rp 12.4M</td>
+                    <td class="text-center py-3 px-4">
+                      <div class="flex items-center justify-center">
+                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                        <span class="ml-1">4.7</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="py-3 px-4 flex items-center">
+                      <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/8/85/Tokopedia.svg"
+                        alt="Tokopedia"
+                        class="h-8 mr-3"
+                      />
+                      Tokopedia
+                    </td>
+                    <td class="text-center py-3 px-4">
+                      <span
+                        class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs"
+                        >Not Connected</span
+                      >
+                    </td>
+                    <td class="text-center py-3 px-4">-</td>
+                    <td class="text-center py-3 px-4">-</td>
+                    <td class="text-center py-3 px-4">-</td>
+                    <td class="text-center py-3 px-4">-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products Page -->
+        <div id="products-page" class="page-content p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Product Management</h2>
+            <div class="flex space-x-2">
+              <button
+                class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+              >
+                <i class="fas fa-plus mr-2"></i> Add Product
+              </button>
+              <button
+                class="bg-white border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50"
+              >
+                <i class="fas fa-upload mr-2"></i> Import
+              </button>
+            </div>
+          </div>
+
+          <!-- Product Filters -->
+          <div class="bg-white rounded-lg shadow p-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <input
+                type="text"
+                placeholder="Search products..."
+                class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <select
+                class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option>All Categories</option>
+                <option>Electronics</option>
+                <option>Fashion</option>
+                <option>Home & Living</option>
+              </select>
+              <select
+                class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option>All Marketplaces</option>
+                <option>Shopee</option>
+                <option>Tokopedia</option>
+                <option>Lazada</option>
+              </select>
+              <select
+                class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option>All Status</option>
+                <option>Active</option>
+                <option>Inactive</option>
+                <option>Out of Stock</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Products Grid -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
+            <div
+              class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+            >
+              <div
+                class="h-48 bg-gray-200 rounded-t-lg flex items-center justify-center"
+              >
+                <i class="fas fa-headphones text-gray-400 text-5xl"></i>
+              </div>
+              <div class="p-4">
+                <h4 class="font-semibold text-gray-800">Wireless Earbuds</h4>
+                <p class="text-sm text-gray-500 mb-2">SKU: WB-001</p>
+                <div class="flex justify-between items-center mb-3">
+                  <span class="text-lg font-bold text-indigo-600"
+                    >Rp 149,900</span
+                  >
+                  <span
+                    class="text-sm bg-green-100 text-green-800 px-2 py-1 rounded"
+                    >In Stock</span
+                  >
+                </div>
+                <div class="flex items-center text-sm text-gray-600 mb-3">
+                  <i class="fas fa-box mr-1"></i> Stock: 245
+                  <span class="mx-2">|</span>
+                  <i class="fas fa-store mr-1"></i> Shopee
+                </div>
+                <button
+                  class="w-full border border-gray-300 py-2 rounded-md hover:bg-gray-50 text-sm"
+                >
+                  <i class="fas fa-edit mr-1"></i> Edit Product
+                </button>
+              </div>
+            </div>
+
+            <div
+              class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+            >
+              <div
+                class="h-48 bg-gray-200 rounded-t-lg flex items-center justify-center"
+              >
+                <i class="fas fa-watch text-gray-400 text-5xl"></i>
+              </div>
+              <div class="p-4">
+                <h4 class="font-semibold text-gray-800">Smart Watch</h4>
+                <p class="text-sm text-gray-500 mb-2">SKU: SW-002</p>
+                <div class="flex justify-between items-center mb-3">
+                  <span class="text-lg font-bold text-indigo-600"
+                    >Rp 299,900</span
+                  >
+                  <span
+                    class="text-sm bg-green-100 text-green-800 px-2 py-1 rounded"
+                    >In Stock</span
+                  >
+                </div>
+                <div class="flex items-center text-sm text-gray-600 mb-3">
+                  <i class="fas fa-box mr-1"></i> Stock: 152
+                  <span class="mx-2">|</span>
+                  <i class="fas fa-store mr-1"></i> Shopee
+                </div>
+                <button
+                  class="w-full border border-gray-300 py-2 rounded-md hover:bg-gray-50 text-sm"
+                >
+                  <i class="fas fa-edit mr-1"></i> Edit Product
+                </button>
+              </div>
+            </div>
+
+            <div
+              class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+            >
+              <div
+                class="h-48 bg-gray-200 rounded-t-lg flex items-center justify-center"
+              >
+                <i class="fas fa-volume-up text-gray-400 text-5xl"></i>
+              </div>
+              <div class="p-4">
+                <h4 class="font-semibold text-gray-800">Bluetooth Speaker</h4>
+                <p class="text-sm text-gray-500 mb-2">SKU: BS-005</p>
+                <div class="flex justify-between items-center mb-3">
+                  <span class="text-lg font-bold text-indigo-600"
+                    >Rp 179,900</span
+                  >
+                  <span
+                    class="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded"
+                    >Low Stock</span
+                  >
+                </div>
+                <div class="flex items-center text-sm text-gray-600 mb-3">
+                  <i class="fas fa-box mr-1"></i> Stock: 12
+                  <span class="mx-2">|</span>
+                  <i class="fas fa-store mr-1"></i> Shopee
+                </div>
+                <button
+                  class="w-full border border-gray-300 py-2 rounded-md hover:bg-gray-50 text-sm"
+                >
+                  <i class="fas fa-edit mr-1"></i> Edit Product
+                </button>
+              </div>
+            </div>
+
+            <div
+              class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+            >
+              <div
+                class="h-48 bg-gray-200 rounded-t-lg flex items-center justify-center"
+              >
+                <i class="fas fa-mobile-alt text-gray-400 text-5xl"></i>
+              </div>
+              <div class="p-4">
+                <h4 class="font-semibold text-gray-800">Phone Case Premium</h4>
+                <p class="text-sm text-gray-500 mb-2">SKU: PC-010</p>
+                <div class="flex justify-between items-center mb-3">
+                  <span class="text-lg font-bold text-indigo-600"
+                    >Rp 59,900</span
+                  >
+                  <span
+                    class="text-sm bg-red-100 text-red-800 px-2 py-1 rounded"
+                    >Out of Stock</span
+                  >
+                </div>
+                <div class="flex items-center text-sm text-gray-600 mb-3">
+                  <i class="fas fa-box mr-1"></i> Stock: 0
+                  <span class="mx-2">|</span>
+                  <i class="fas fa-store mr-1"></i> Shopee
+                </div>
+                <button
+                  class="w-full border border-gray-300 py-2 rounded-md hover:bg-gray-50 text-sm"
+                >
+                  <i class="fas fa-edit mr-1"></i> Edit Product
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytics Page -->
+        <div id="analytics-page" class="page-content p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">
+              Analytics & Insights
+            </h2>
+            <div class="flex space-x-2">
+              <select class="border border-gray-300 rounded-md px-3 py-2">
+                <option>Last 30 days</option>
+                <option>Last 7 days</option>
+                <option>Last 90 days</option>
+                <option>This Year</option>
+              </select>
+              <button
+                class="bg-white border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50"
+              >
+                <i class="fas fa-download mr-2"></i> Export Report
+              </button>
+            </div>
+          </div>
+
+          <!-- Key Metrics Overview -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-medium text-gray-500">Gross Revenue</h3>
+                <i class="fas fa-dollar-sign text-green-500"></i>
+              </div>
+              <p class="text-2xl font-bold text-gray-800">Rp 45.2M</p>
+              <p class="text-sm text-green-500 mt-2">
+                <i class="fas fa-arrow-up mr-1"></i> 32% vs last period
+              </p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-medium text-gray-500">
+                  Average Order Value
+                </h3>
+                <i class="fas fa-shopping-cart text-blue-500"></i>
+              </div>
+              <p class="text-2xl font-bold text-gray-800">Rp 165K</p>
+              <p class="text-sm text-red-500 mt-2">
+                <i class="fas fa-arrow-down mr-1"></i> 5% vs last period
+              </p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-medium text-gray-500">
+                  Customer Retention
+                </h3>
+                <i class="fas fa-user-check text-purple-500"></i>
+              </div>
+              <p class="text-2xl font-bold text-gray-800">68%</p>
+              <p class="text-sm text-green-500 mt-2">
+                <i class="fas fa-arrow-up mr-1"></i> 12% vs last period
+              </p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-medium text-gray-500">Return Rate</h3>
+                <i class="fas fa-undo text-orange-500"></i>
+              </div>
+              <p class="text-2xl font-bold text-gray-800">2.3%</p>
+              <p class="text-sm text-green-500 mt-2">
+                <i class="fas fa-arrow-down mr-1"></i> 0.8% vs last period
+              </p>
+            </div>
+          </div>
+
+          <!-- Charts Section -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+              <h3 class="text-lg font-semibold mb-4 text-gray-700">
+                Revenue Trend
+              </h3>
+              <div
+                class="h-64 flex items-center justify-center bg-gray-50 rounded"
+              >
+                <p class="text-gray-500">Revenue trend chart</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+              <h3 class="text-lg font-semibold mb-4 text-gray-700">
+                Top Categories
+              </h3>
+              <div class="space-y-4">
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-sm text-gray-600">Electronics</span>
+                    <span class="text-sm font-medium">45%</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      class="bg-indigo-600 h-2 rounded-full"
+                      style="width: 45%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-sm text-gray-600">Fashion</span>
+                    <span class="text-sm font-medium">30%</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      class="bg-green-600 h-2 rounded-full"
+                      style="width: 30%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-sm text-gray-600">Home & Living</span>
+                    <span class="text-sm font-medium">15%</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      class="bg-yellow-600 h-2 rounded-full"
+                      style="width: 15%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-sm text-gray-600">Others</span>
+                    <span class="text-sm font-medium">10%</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      class="bg-purple-600 h-2 rounded-full"
+                      style="width: 10%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Analytics -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-700">
+              Customer Demographics
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <h4 class="text-sm font-medium text-gray-600 mb-3">
+                  Age Distribution
+                </h4>
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-sm">18-24</span>
+                    <span class="text-sm font-medium">22%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm">25-34</span>
+                    <span class="text-sm font-medium">45%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm">35-44</span>
+                    <span class="text-sm font-medium">25%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm">45+</span>
+                    <span class="text-sm font-medium">8%</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-600 mb-3">
+                  Top Locations
+                </h4>
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-sm">Jakarta</span>
+                    <span class="text-sm font-medium">35%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm">Surabaya</span>
+                    <span class="text-sm font-medium">18%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm">Bandung</span>
+                    <span class="text-sm font-medium">12%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm">Others</span>
+                    <span class="text-sm font-medium">35%</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-600 mb-3">
+                  Device Type
+                </h4>
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-sm">Mobile</span>
+                    <span class="text-sm font-medium">78%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm">Desktop</span>
+                    <span class="text-sm font-medium">18%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm">Tablet</span>
+                    <span class="text-sm font-medium">4%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Assistant Page -->
+        <div id="ai-assistant-page" class="page-content p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">
+              AI Business Assistant
+            </h2>
+            <div class="flex items-center space-x-2">
+              <span class="text-sm text-gray-500">Powered by</span>
+              <div
+                class="flex items-center bg-indigo-100 px-3 py-1 rounded-full"
+              >
+                <i class="fas fa-brain text-indigo-600 mr-1"></i>
+                <span class="text-sm font-medium text-indigo-800"
+                  >MarketAI Pro</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Chat Area -->
+            <div class="lg:col-span-2">
+              <div class="bg-white rounded-lg shadow h-[600px] flex flex-col">
+                <div class="p-4 border-b">
+                  <h3 class="font-semibold text-gray-700">
+                    Chat with AI Assistant
+                  </h3>
+                  <p class="text-sm text-gray-500">
+                    Get instant insights and recommendations
+                  </p>
+                </div>
+
+                <div
+                  class="flex-1 overflow-y-auto p-4 space-y-4"
+                  id="aiFullChatContainer"
+                >
+                  <div class="ai-message visible">
+                    <div class="flex items-start">
+                      <div
+                        class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3 flex-shrink-0"
+                      >
+                        <i class="fas fa-robot text-indigo-600"></i>
+                      </div>
+                      <div class="bg-gray-100 rounded-lg p-4 max-w-[80%]">
+                        <p class="text-gray-800">
+                          Welcome! I'm your AI Business Assistant. I can help
+                          you with:
+                        </p>
+                        <ul class="mt-2 space-y-1 text-sm text-gray-600">
+                          <li>• Sales performance analysis</li>
+                          <li>• Product recommendations</li>
+                          <li>• Marketing strategies</li>
+                          <li>• Inventory management</li>
+                          <li>• Customer insights</li>
+                        </ul>
+                        <p class="mt-3 text-gray-800">
+                          What would you like to know about your business today?
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-4 border-t">
+                  <div class="flex space-x-2">
+                    <input
+                      type="text"
+                      id="aiFullPromptInput"
+                      class="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Type your message..."
+                    />
+                    <button
+                      id="sendAiFullPrompt"
+                      class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                    >
+                      <i class="fas fa-paper-plane"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Suggestions Sidebar -->
+            <div class="lg:col-span-1">
+              <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h3 class="font-semibold text-gray-700 mb-4">Quick Actions</h3>
+                <div class="space-y-2">
+                  <button
+                    class="w-full text-left bg-indigo-50 hover:bg-indigo-100 p-3 rounded-md text-sm ai-quick-action"
+                  >
+                    <i class="fas fa-chart-line text-indigo-600 mr-2"></i>
+                    Analyze this week's performance
+                  </button>
+                  <button
+                    class="w-full text-left bg-green-50 hover:bg-green-100 p-3 rounded-md text-sm ai-quick-action"
+                  >
+                    <i class="fas fa-lightbulb text-green-600 mr-2"></i>
+                    Suggest marketing campaigns
+                  </button>
+                  <button
+                    class="w-full text-left bg-purple-50 hover:bg-purple-100 p-3 rounded-md text-sm ai-quick-action"
+                  >
+                    <i class="fas fa-box text-purple-600 mr-2"></i>
+                    Low stock alerts
+                  </button>
+                  <button
+                    class="w-full text-left bg-orange-50 hover:bg-orange-100 p-3 rounded-md text-sm ai-quick-action"
+                  >
+                    <i class="fas fa-users text-orange-600 mr-2"></i>
+                    Customer behavior insights
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="font-semibold text-gray-700 mb-4">AI Insights</h3>
+                <div class="space-y-4">
+                  <div class="border-l-4 border-indigo-500 pl-4">
+                    <p class="text-sm font-medium text-gray-800">
+                      Opportunity Detected
+                    </p>
+                    <p class="text-sm text-gray-600 mt-1">
+                      Your wireless earbuds are trending. Consider increasing
+                      inventory by 30%.
+                    </p>
+                  </div>
+                  <div class="border-l-4 border-yellow-500 pl-4">
+                    <p class="text-sm font-medium text-gray-800">
+                      Price Optimization
+                    </p>
+                    <p class="text-sm text-gray-600 mt-1">
+                      Competitor analysis suggests you could increase Smart
+                      Watch price by 5%.
+                    </p>
+                  </div>
+                  <div class="border-l-4 border-green-500 pl-4">
+                    <p class="text-sm font-medium text-gray-800">
+                      Customer Trend
+                    </p>
+                    <p class="text-sm text-gray-600 mt-1">
+                      Bundle offers have 23% higher conversion rate.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings-page" class="page-content p-6">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Settings</h2>
+            <p class="text-gray-600">
+              Manage your account and application preferences
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Settings Navigation -->
+            <div class="lg:col-span-1">
+              <div class="bg-white rounded-lg shadow p-4">
+                <nav class="space-y-1">
+                  <button
+                    class="w-full text-left px-4 py-2 rounded-md bg-indigo-50 text-indigo-700 font-medium"
+                  >
+                    <i class="fas fa-user mr-2"></i> Profile
+                  </button>
+                  <button
+                    class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-50"
+                  >
+                    <i class="fas fa-store mr-2"></i> Store Settings
+                  </button>
+                  <button
+                    class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-50"
+                  >
+                    <i class="fas fa-bell mr-2"></i> Notifications
+                  </button>
+                  <button
+                    class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-50"
+                  >
+                    <i class="fas fa-link mr-2"></i> Integrations
+                  </button>
+                  <button
+                    class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-50"
+                  >
+                    <i class="fas fa-shield-alt mr-2"></i> Security
+                  </button>
+                  <button
+                    class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-50"
+                  >
+                    <i class="fas fa-credit-card mr-2"></i> Billing
+                  </button>
+                </nav>
+              </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="lg:col-span-3">
+              <!-- Profile Settings -->
+              <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-700">
+                  Profile Information
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Full Name</label
+                    >
+                    <input
+                      type="text"
+                      value="John Doe"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Email</label
+                    >
+                    <input
+                      type="email"
+                      value="john.doe@example.com"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Phone</label
+                    >
+                    <input
+                      type="tel"
+                      value="+62 812-3456-7890"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Company</label
+                    >
+                    <input
+                      type="text"
+                      value="Tech Store Indonesia"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                </div>
+                <div class="mt-6">
+                  <button
+                    class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+
+              <!-- Store Settings -->
+              <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-700">
+                  Store Preferences
+                </h3>
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Default Currency</label
+                    >
+                    <select
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                      <option selected>Indonesian Rupiah (IDR)</option>
+                      <option>US Dollar (USD)</option>
+                      <option>Singapore Dollar (SGD)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Time Zone</label
+                    >
+                    <select
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                      <option selected>Asia/Jakarta (WIB)</option>
+                      <option>Asia/Makassar (WITA)</option>
+                      <option>Asia/Jayapura (WIT)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked
+                        class="mr-2 rounded text-indigo-600 focus:ring-indigo-500"
+                      />
+                      <span class="text-sm text-gray-700"
+                        >Enable automatic inventory sync</span
+                      >
+                    </label>
+                  </div>
+                  <div>
+                    <label class="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked
+                        class="mr-2 rounded text-indigo-600 focus:ring-indigo-500"
+                      />
+                      <span class="text-sm text-gray-700"
+                        >Send low stock notifications</span
+                      >
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Subscription Info -->
+              <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-700">
+                  Subscription
+                </h3>
+                <div class="bg-indigo-50 rounded-lg p-4 mb-4">
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <h4 class="font-semibold text-indigo-900">
+                        Premium Plan
+                      </h4>
+                      <p class="text-sm text-indigo-700">
+                        Full access to all features
+                      </p>
+                    </div>
+                    <span
+                      class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm"
+                      >Active</span
+                    >
+                  </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                  <p>Next billing date: July 12, 2025</p>
+                  <p>Amount: Rp 299,000/month</p>
+                </div>
+                <button
+                  class="mt-4 text-indigo-600 hover:text-indigo-800 text-sm font-medium"
+                >
+                  Manage Subscription →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.querySelectorAll('.nav-item').forEach(item => {
+          item.addEventListener('click', function() {
+              const targetPage = this.getAttribute('data-page');
+
+              // Update active nav item
+              document.querySelectorAll('.nav-item').forEach(nav => {
+                  nav.classList.remove('active');
+                  nav.classList.remove('bg-indigo-800');
+              });
+              this.classList.add('active');
+              this.classList.add('bg-indigo-800');
+
+              // Show target page
+              document.querySelectorAll('.page-content').forEach(page => {
+                  page.classList.remove('active');
+              });
+              document.getElementById(${targetPage}-page).classList.add('active');
+
+              // Close mobile menu if open
+              const mobileSidebar = document.getElementById('mobileSidebar');
+              if (mobileSidebar.classList.contains('left-0')) {
+                  mobileSidebar.classList.remove('left-0');
+                  mobileSidebar.classList.add('-left-64');
+              }
+          });
+      });
+
+      // Mobile menu toggle
+      document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+          const sidebar = document.getElementById('mobileSidebar');
+          if (sidebar.classList.contains('-left-64')) {
+              sidebar.classList.remove('-left-64');
+              sidebar.classList.add('left-0');
+          } else {
+              sidebar.classList.remove('left-0');
+              sidebar.classList.add('-left-64');
+          }
+      });
+
+      // Simple chart drawing (mock)
+      function drawMockChart(containerId, color) {
+          const container = document.getElementById(containerId);
+          if (container) {
+              // Simplified chart drawing with SVG
+              const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+              svg.setAttribute('width', '100%');
+              svg.setAttribute('height', '100%');
+              svg.setAttribute('viewBox', '0 0 300 100');
+
+              // Create a simple line chart
+              const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+              path.setAttribute('d', 'M 0,80 C 30,60 50,100 80,40 C 100,20 130,90 160,50 C 180,30 210,70 240,60 C 250,55 270,65 300,40');
+              path.setAttribute('fill', 'none');
+              path.setAttribute('stroke', color);
+              path.setAttribute('stroke-width', '2');
+
+              svg.appendChild(path);
+              container.appendChild(svg);
+          }
+      }
+
+      // Draw mock charts when dashboard is visible
+      drawMockChart('revenueChart', '#6366f1');
+      drawMockChart('ordersChart', '#10b981');
+      drawMockChart('conversionChart', '#8b5cf6');
+
+      // AI Chat functionality for full AI Assistant page
+      document.getElementById('sendAiFullPrompt')?.addEventListener('click', function() {
+          const input = document.getElementById('aiFullPromptInput');
+          const prompt = input.value.trim();
+
+          if (prompt) {
+              // Add user message
+              addMessageToFullChat(prompt, 'user');
+
+              // Clear input
+              input.value = '';
+
+              // Simulate AI response after a delay
+              setTimeout(() => {
+                  const aiResponse = generateAIResponse(prompt);
+                  addMessageToFullChat(aiResponse, 'ai');
+              }, 1000);
+          }
+      });
+
+      // Enter key handler for AI Assistant page
+      document.getElementById('aiFullPromptInput')?.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              document.getElementById('sendAiFullPrompt').click();
+          }
+      });
+
+      // Quick action buttons in AI Assistant
+      document.querySelectorAll('.ai-quick-action').forEach(btn => {
+          btn.addEventListener('click', function() {
+              const action = this.textContent.trim();
+              document.getElementById('aiFullPromptInput').value = action;
+              document.getElementById('sendAiFullPrompt').click();
+          });
+      });
+
+      function addMessageToFullChat(message, sender) {
+          const container = document.getElementById('aiFullChatContainer');
+
+          const messageDiv = document.createElement('div');
+          messageDiv.className = 'ai-message mb-4';
+
+          if (sender === 'user') {
+              messageDiv.innerHTML = `
+                  <div class="flex items-start justify-end">
+                      <div class="bg-indigo-600 text-white rounded-lg p-4 max-w-[80%]">
+                          <p>${message}</p>
+                      </div>
+                      <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center ml-3 flex-shrink-0">
+                          <i class="fas fa-user text-gray-600"></i>
+                      </div>
+                  </div>
+              `;
+          } else {
+              messageDiv.innerHTML = `
+                  <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3 flex-shrink-0">
+                          <i class="fas fa-robot text-indigo-600"></i>
+                      </div>
+                      <div class="bg-gray-100 rounded-lg p-4 max-w-[80%]">
+                          <p>${message}</p>
+                      </div>
+                  </div>
+              `;
+          }
+
+          container.appendChild(messageDiv);
+
+          setTimeout(() => {
+              messageDiv.classList.add('visible');
+          }, 10);
+
+          container.scrollTop = container.scrollHeight;
+      }
+
+      function generateAIResponse(prompt) {
+          const responses = {
+              'performance': `Based on this week's data analysis:
+
+              📈 *Revenue Performance*: Rp 3.2M (up 15% from last week)
+              📦 *Top Performer*: Wireless Earbuds with 68 units sold
+              🔄 *Conversion Rate*: 3.8% (0.6% increase)
+
+              *Key Insights:*
+              - Wednesday and Saturday remain your peak sales days
+              - Mobile traffic accounts for 82% of conversions
+              - Shopee flash sales drove 40% of weekly revenue
+
+              *Recommendations:*
+              1. Schedule more promotions for Wednesday/Saturday
+              2. Optimize mobile product pages for better conversion
+              3. Consider expanding flash sale participation`,
+
+              'marketing': `Here are personalized marketing campaign suggestions:
+
+              *1. Bundle Campaign* 🎁
+              - Pair Wireless Earbuds + Phone Case
+              - 15% discount on bundle
+              - Target: Existing customers
+              - Platform: Shopee & Email
+
+              *2. Flash Sale Strategy* ⚡
+              - Smart Watch at 20% off
+              - Limited to 50 units
+              - Wednesday 8-10 PM
+              - Push notification to followers
+
+              *3. Social Media Contest* 📱
+              - User-generated content campaign
+              - Prize: Bluetooth Speaker
+              - Hashtag: #TechStoreID
+              - Duration: 2 weeks
+
+              Expected ROI: 3.5x based on similar campaigns`,
+
+              'stock': `⚠ *Low Stock Alert Summary*:
+
+              *Critical (Need Immediate Restock):*
+              • Phone Case Premium - 0 units (12 pending orders)
+              • USB-C Cable - 3 units (selling 5/day average)
+
+              *Low Stock Warning:*
+              • Bluetooth Speaker - 12 units (2-3 days supply)
+              • Screen Protector - 18 units (4-5 days supply)
+
+              *Restock Recommendations:*
+              1. Phone Case Premium: Order 200 units immediately
+              2. USB-C Cable: Order 150 units (supplier lead time: 3 days)
+              3. Bluetooth Speaker: Order 100 units this week
+
+              Would you like me to prepare the purchase orders?`,
+
+              'customer': `*Customer Behavior Analysis* 👥
+
+              *Purchase Patterns:*
+              - Peak hours: 12-2 PM and 8-10 PM
+              - Average cart value: Rp 187,000
+              - Repeat purchase rate: 34% (up 5%)
+
+              *Demographics Update:*
+              - 68% aged 25-34
+              - 78% mobile users
+              - Top cities: Jakarta (35%), Surabaya (18%)
+
+              *Behavioral Insights:*
+              1. Customers who buy earbuds often return for accessories
+              2. Free shipping threshold (Rp 150k) increases AOV by 23%
+              3. Product reviews influence 67% of purchases
+
+              *Action Items:*
+              - Create accessory upsell campaigns
+              - Highlight reviews on product pages
+              - Consider loyalty program for 25-34 segment`,
+
+              'default': `I understand your query. Let me analyze your business data to provide relevant insights.
+
+              Based on your current metrics:
+              • Revenue is trending 24% above last month
+              • Your best-performing category is Electronics (45% of sales)
+              • Customer satisfaction is at 4.7/5 stars
+
+              For more specific insights, you might want to ask about:
+              - Weekly performance analysis
+              - Marketing campaign suggestions
+              - Inventory management
+              - Customer behavior patterns
+
+              What specific aspect would you like me to dive deeper into?`
+          };
+
+          prompt = prompt.toLowerCase();
+          if (prompt.includes('performance') || prompt.includes('analyze') || prompt.includes('week')) {
+              return responses['performance'];
+          } else if (prompt.includes('marketing') || prompt.includes('campaign') || prompt.includes('promot')) {
+              return responses['marketing'];
+          } else if (prompt.includes('stock') || prompt.includes('inventory') || prompt.includes('low')) {
+              return responses['stock'];
+          } else if (prompt.includes('customer') || prompt.includes('behavior') || prompt.includes('insight')) {
+              return responses['customer'];
+          } else {
+              return responses['default'];
+          }
+      }
+    </script>
+  </body>
+</html>
