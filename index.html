@@ -1457,11 +1457,14 @@
               this.classList.add('active');
               this.classList.add('bg-indigo-800');
 
-              // Show target page
+              // Show target page - PERBAIKAN DI SINI
               document.querySelectorAll('.page-content').forEach(page => {
                   page.classList.remove('active');
               });
-              document.getElementById(${targetPage}-page).classList.add('active');
+              const targetPageElement = document.getElementById(targetPage + '-page');
+              if (targetPageElement) {
+                  targetPageElement.classList.add('active');
+              }
 
               // Close mobile menu if open
               const mobileSidebar = document.getElementById('mobileSidebar');
@@ -1592,97 +1595,89 @@
               'performance': `Based on this week's data analysis:
 
               📈 *Revenue Performance*: Rp 3.2M (up 15% from last week)
-              📦 *Top Performer*: Wireless Earbuds with 68 units sold
-              🔄 *Conversion Rate*: 3.8% (0.6% increase)
-
-              *Key Insights:*
-              - Wednesday and Saturday remain your peak sales days
-              - Mobile traffic accounts for 82% of conversions
-              - Shopee flash sales drove 40% of weekly revenue
-
-              *Recommendations:*
+              *Recommendations:*: Wireless Earbuds with 68 units sold
               1. Schedule more promotions for Wednesday/Saturday
               2. Optimize mobile product pages for better conversion
               3. Consider expanding flash sale participation`,
-
+              - Wednesday and Saturday remain your peak sales days
               'marketing': `Here are personalized marketing campaign suggestions:
-
+              - Shopee flash sales drove 40% of weekly revenue
               *1. Bundle Campaign* 🎁
               - Pair Wireless Earbuds + Phone Case
-              - 15% discount on bundle
-              - Target: Existing customers
-              - Platform: Shopee & Email
+              - 15% discount on bundleons for Wednesday/Saturday
+              - Target: Existing customersages for better conversion
+              - Platform: Shopee & Emailh sale participation`,
 
-              *2. Flash Sale Strategy* ⚡
+              *2. Flash Sale Strategy* ⚡sonalized marketing campaign suggestions:
               - Smart Watch at 20% off
-              - Limited to 50 units
-              - Wednesday 8-10 PM
+              - Limited to 50 units🎁
+              - Wednesday 8-10 PMbuds + Phone Case
               - Push notification to followers
-
+              - Target: Existing customers
               *3. Social Media Contest* 📱
               - User-generated content campaign
               - Prize: Bluetooth Speaker
-              - Hashtag: #TechStoreID
-              - Duration: 2 weeks
-
+              - Hashtag: #TechStoreIDf
+              - Duration: 2 weeksts
+              - Wednesday 8-10 PM
               Expected ROI: 3.5x based on similar campaigns`,
 
               'stock': `⚠ *Low Stock Alert Summary*:
-
+              - User-generated content campaign
               *Critical (Need Immediate Restock):*
               • Phone Case Premium - 0 units (12 pending orders)
               • USB-C Cable - 3 units (selling 5/day average)
 
-              *Low Stock Warning:*
+              *Low Stock Warning:*ased on similar campaigns`,
               • Bluetooth Speaker - 12 units (2-3 days supply)
               • Screen Protector - 18 units (4-5 days supply)
 
-              *Restock Recommendations:*
+              *Restock Recommendations:*Restock):*
               1. Phone Case Premium: Order 200 units immediately
               2. USB-C Cable: Order 150 units (supplier lead time: 3 days)
               3. Bluetooth Speaker: Order 100 units this week
-
+              *Low Stock Warning:*
               Would you like me to prepare the purchase orders?`,
-
+              • Screen Protector - 18 units (4-5 days supply)
               'customer': `*Customer Behavior Analysis* 👥
-
-              *Purchase Patterns:*
-              - Peak hours: 12-2 PM and 8-10 PM
-              - Average cart value: Rp 187,000
+              *Restock Recommendations:*
+              *Purchase Patterns:*m: Order 200 units immediately
+              - Peak hours: 12-2 PM and 8-10 PMsupplier lead time: 3 days)
+              - Average cart value: Rp 187,000units this week
               - Repeat purchase rate: 34% (up 5%)
-
+              Would you like me to prepare the purchase orders?`,
               *Demographics Update:*
-              - 68% aged 25-34
+              - 68% aged 25-34stomer Behavior Analysis* 👥
               - 78% mobile users
               - Top cities: Jakarta (35%), Surabaya (18%)
-
-              *Behavioral Insights:*
+              - Peak hours: 12-2 PM and 8-10 PM
+              *Behavioral Insights:*Rp 187,000
               1. Customers who buy earbuds often return for accessories
               2. Free shipping threshold (Rp 150k) increases AOV by 23%
               3. Product reviews influence 67% of purchases
-
-              *Action Items:*
-              - Create accessory upsell campaigns
+              - 68% aged 25-34
+              *Action Items:*ers
+              - Create accessory upsell campaignsya (18%)
               - Highlight reviews on product pages
               - Consider loyalty program for 25-34 segment`,
-
+              1. Customers who buy earbuds often return for accessories
               'default': `I understand your query. Let me analyze your business data to provide relevant insights.
-
+              3. Product reviews influence 67% of purchases
               Based on your current metrics:
               • Revenue is trending 24% above last month
               • Your best-performing category is Electronics (45% of sales)
               • Customer satisfaction is at 4.7/5 stars
-
+              - Consider loyalty program for 25-34 segment`,
               For more specific insights, you might want to ask about:
-              - Weekly performance analysis
+              - Weekly performance analysis query. Let me analyze your business data to provide relevant insights.
               - Marketing campaign suggestions
-              - Inventory management
-              - Customer behavior patterns
-
+              - Inventory managementmetrics:
+              - Customer behavior patternsove last month
+              • Your best-performing category is Electronics (45% of sales)
               What specific aspect would you like me to dive deeper into?`
           };
-
-          prompt = prompt.toLowerCase();
+              For more specific insights, you might want to ask about:
+          prompt = prompt.toLowerCase();sis
           if (prompt.includes('performance') || prompt.includes('analyze') || prompt.includes('week')) {
               return responses['performance'];
           } else if (prompt.includes('marketing') || prompt.includes('campaign') || prompt.includes('promot')) {
@@ -1690,6 +1685,14 @@
           } else if (prompt.includes('stock') || prompt.includes('inventory') || prompt.includes('low')) {
               return responses['stock'];
           } else if (prompt.includes('customer') || prompt.includes('behavior') || prompt.includes('insight')) {
+              return responses['customer'];
+          } else {pt.includes('performance') || prompt.includes('analyze') || prompt.includes('week')) {
+              return responses['default'];e'];
+          } else if (prompt.includes('marketing') || prompt.includes('campaign') || prompt.includes('promot')) {
+      }       return responses['marketing'];
+    </script>lse if (prompt.includes('stock') || prompt.includes('inventory') || prompt.includes('low')) {
+  </body>     return responses['stock'];
+</html>   } else if (prompt.includes('customer') || prompt.includes('behavior') || prompt.includes('insight')) {
               return responses['customer'];
           } else {
               return responses['default'];
