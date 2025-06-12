@@ -1445,117 +1445,137 @@
 
     <script>
       // Navigation functionality
-      document.querySelectorAll('.nav-item').forEach(item => {
-          item.addEventListener('click', function() {
-              const targetPage = this.getAttribute('data-page');
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          const targetPage = this.getAttribute("data-page");
 
-              // Update active nav item
-              document.querySelectorAll('.nav-item').forEach(nav => {
-                  nav.classList.remove('active');
-                  nav.classList.remove('bg-indigo-800');
-              });
-              this.classList.add('active');
-              this.classList.add('bg-indigo-800');
-
-              // Show target page
-              document.querySelectorAll('.page-content').forEach(page => {
-                  page.classList.remove('active');
-              });
-              document.getElementById(${targetPage}-page).classList.add('active');
-
-              // Close mobile menu if open
-              const mobileSidebar = document.getElementById('mobileSidebar');
-              if (mobileSidebar.classList.contains('left-0')) {
-                  mobileSidebar.classList.remove('left-0');
-                  mobileSidebar.classList.add('-left-64');
-              }
+          // Update active nav item
+          document.querySelectorAll(".nav-item").forEach((nav) => {
+            nav.classList.remove("active");
+            nav.classList.remove("bg-indigo-800");
           });
+          this.classList.add("active");
+          this.classList.add("bg-indigo-800");
+
+          // Show target page - PERBAIKAN DI SINI
+          document.querySelectorAll(".page-content").forEach((page) => {
+            page.classList.remove("active");
+          });
+          const targetPageElement = document.getElementById(
+            targetPage + "-page"
+          );
+          if (targetPageElement) {
+            targetPageElement.classList.add("active");
+          }
+
+          // Close mobile menu if open
+          const mobileSidebar = document.getElementById("mobileSidebar");
+          if (mobileSidebar.classList.contains("left-0")) {
+            mobileSidebar.classList.remove("left-0");
+            mobileSidebar.classList.add("-left-64");
+          }
+        });
       });
 
       // Mobile menu toggle
-      document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-          const sidebar = document.getElementById('mobileSidebar');
-          if (sidebar.classList.contains('-left-64')) {
-              sidebar.classList.remove('-left-64');
-              sidebar.classList.add('left-0');
+      document
+        .getElementById("mobileMenuBtn")
+        .addEventListener("click", function () {
+          const sidebar = document.getElementById("mobileSidebar");
+          if (sidebar.classList.contains("-left-64")) {
+            sidebar.classList.remove("-left-64");
+            sidebar.classList.add("left-0");
           } else {
-              sidebar.classList.remove('left-0');
-              sidebar.classList.add('-left-64');
+            sidebar.classList.remove("left-0");
+            sidebar.classList.add("-left-64");
           }
-      });
+        });
 
       // Simple chart drawing (mock)
       function drawMockChart(containerId, color) {
-          const container = document.getElementById(containerId);
-          if (container) {
-              // Simplified chart drawing with SVG
-              const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-              svg.setAttribute('width', '100%');
-              svg.setAttribute('height', '100%');
-              svg.setAttribute('viewBox', '0 0 300 100');
+        const container = document.getElementById(containerId);
+        if (container) {
+          // Simplified chart drawing with SVG
+          const svg = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "svg"
+          );
+          svg.setAttribute("width", "100%");
+          svg.setAttribute("height", "100%");
+          svg.setAttribute("viewBox", "0 0 300 100");
 
-              // Create a simple line chart
-              const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-              path.setAttribute('d', 'M 0,80 C 30,60 50,100 80,40 C 100,20 130,90 160,50 C 180,30 210,70 240,60 C 250,55 270,65 300,40');
-              path.setAttribute('fill', 'none');
-              path.setAttribute('stroke', color);
-              path.setAttribute('stroke-width', '2');
+          // Create a simple line chart
+          const path = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+          );
+          path.setAttribute(
+            "d",
+            "M 0,80 C 30,60 50,100 80,40 C 100,20 130,90 160,50 C 180,30 210,70 240,60 C 250,55 270,65 300,40"
+          );
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke", color);
+          path.setAttribute("stroke-width", "2");
 
-              svg.appendChild(path);
-              container.appendChild(svg);
-          }
+          svg.appendChild(path);
+          container.appendChild(svg);
+        }
       }
 
       // Draw mock charts when dashboard is visible
-      drawMockChart('revenueChart', '#6366f1');
-      drawMockChart('ordersChart', '#10b981');
-      drawMockChart('conversionChart', '#8b5cf6');
+      drawMockChart("revenueChart", "#6366f1");
+      drawMockChart("ordersChart", "#10b981");
+      drawMockChart("conversionChart", "#8b5cf6");
 
       // AI Chat functionality for full AI Assistant page
-      document.getElementById('sendAiFullPrompt')?.addEventListener('click', function() {
-          const input = document.getElementById('aiFullPromptInput');
+      document
+        .getElementById("sendAiFullPrompt")
+        ?.addEventListener("click", function () {
+          const input = document.getElementById("aiFullPromptInput");
           const prompt = input.value.trim();
 
           if (prompt) {
-              // Add user message
-              addMessageToFullChat(prompt, 'user');
+            // Add user message
+            addMessageToFullChat(prompt, "user");
 
-              // Clear input
-              input.value = '';
+            // Clear input
+            input.value = "";
 
-              // Simulate AI response after a delay
-              setTimeout(() => {
-                  const aiResponse = generateAIResponse(prompt);
-                  addMessageToFullChat(aiResponse, 'ai');
-              }, 1000);
+            // Simulate AI response after a delay
+            setTimeout(() => {
+              const aiResponse = generateAIResponse(prompt);
+              addMessageToFullChat(aiResponse, "ai");
+            }, 1000);
           }
-      });
+        });
 
       // Enter key handler for AI Assistant page
-      document.getElementById('aiFullPromptInput')?.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              document.getElementById('sendAiFullPrompt').click();
+      document
+        .getElementById("aiFullPromptInput")
+        ?.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            document.getElementById("sendAiFullPrompt").click();
           }
-      });
+        });
 
       // Quick action buttons in AI Assistant
-      document.querySelectorAll('.ai-quick-action').forEach(btn => {
-          btn.addEventListener('click', function() {
-              const action = this.textContent.trim();
-              document.getElementById('aiFullPromptInput').value = action;
-              document.getElementById('sendAiFullPrompt').click();
-          });
+      document.querySelectorAll(".ai-quick-action").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const action = this.textContent.trim();
+          document.getElementById("aiFullPromptInput").value = action;
+          document.getElementById("sendAiFullPrompt").click();
+        });
       });
 
       function addMessageToFullChat(message, sender) {
-          const container = document.getElementById('aiFullChatContainer');
+        const container = document.getElementById("aiFullChatContainer");
 
-          const messageDiv = document.createElement('div');
-          messageDiv.className = 'ai-message mb-4';
+        const messageDiv = document.createElement("div");
+        messageDiv.className = "ai-message mb-4";
 
-          if (sender === 'user') {
-              messageDiv.innerHTML = `
+        if (sender === "user") {
+          messageDiv.innerHTML = `
                   <div class="flex items-start justify-end">
                       <div class="bg-indigo-600 text-white rounded-lg p-4 max-w-[80%]">
                           <p>${message}</p>
@@ -1565,8 +1585,8 @@
                       </div>
                   </div>
               `;
-          } else {
-              messageDiv.innerHTML = `
+        } else {
+          messageDiv.innerHTML = `
                   <div class="flex items-start">
                       <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3 flex-shrink-0">
                           <i class="fas fa-robot text-indigo-600"></i>
@@ -1576,20 +1596,20 @@
                       </div>
                   </div>
               `;
-          }
+        }
 
-          container.appendChild(messageDiv);
+        container.appendChild(messageDiv);
 
-          setTimeout(() => {
-              messageDiv.classList.add('visible');
-          }, 10);
+        setTimeout(() => {
+          messageDiv.classList.add("visible");
+        }, 10);
 
-          container.scrollTop = container.scrollHeight;
+        container.scrollTop = container.scrollHeight;
       }
 
       function generateAIResponse(prompt) {
-          const responses = {
-              'performance': `Based on this week's data analysis:
+        const responses = {
+          performance: `Based on this week's data analysis:
 
               📈 *Revenue Performance*: Rp 3.2M (up 15% from last week)
               📦 *Top Performer*: Wireless Earbuds with 68 units sold
@@ -1605,7 +1625,7 @@
               2. Optimize mobile product pages for better conversion
               3. Consider expanding flash sale participation`,
 
-              'marketing': `Here are personalized marketing campaign suggestions:
+          marketing: `Here are personalized marketing campaign suggestions:
 
               *1. Bundle Campaign* 🎁
               - Pair Wireless Earbuds + Phone Case
@@ -1627,7 +1647,7 @@
 
               Expected ROI: 3.5x based on similar campaigns`,
 
-              'stock': `⚠ *Low Stock Alert Summary*:
+          stock: `⚠ *Low Stock Alert Summary*:
 
               *Critical (Need Immediate Restock):*
               • Phone Case Premium - 0 units (12 pending orders)
@@ -1644,7 +1664,7 @@
 
               Would you like me to prepare the purchase orders?`,
 
-              'customer': `*Customer Behavior Analysis* 👥
+          customer: `*Customer Behavior Analysis* 👥
 
               *Purchase Patterns:*
               - Peak hours: 12-2 PM and 8-10 PM
@@ -1666,7 +1686,7 @@
               - Highlight reviews on product pages
               - Consider loyalty program for 25-34 segment`,
 
-              'default': `I understand your query. Let me analyze your business data to provide relevant insights.
+          default: `I understand your query. Let me analyze your business data to provide relevant insights.
 
               Based on your current metrics:
               • Revenue is trending 24% above last month
@@ -1679,21 +1699,37 @@
               - Inventory management
               - Customer behavior patterns
 
-              What specific aspect would you like me to dive deeper into?`
-          };
+              What specific aspect would you like me to dive deeper into?`,
+        };
 
-          prompt = prompt.toLowerCase();
-          if (prompt.includes('performance') || prompt.includes('analyze') || prompt.includes('week')) {
-              return responses['performance'];
-          } else if (prompt.includes('marketing') || prompt.includes('campaign') || prompt.includes('promot')) {
-              return responses['marketing'];
-          } else if (prompt.includes('stock') || prompt.includes('inventory') || prompt.includes('low')) {
-              return responses['stock'];
-          } else if (prompt.includes('customer') || prompt.includes('behavior') || prompt.includes('insight')) {
-              return responses['customer'];
-          } else {
-              return responses['default'];
-          }
+        prompt = prompt.toLowerCase();
+        if (
+          prompt.includes("performance") ||
+          prompt.includes("analyze") ||
+          prompt.includes("week")
+        ) {
+          return responses["performance"];
+        } else if (
+          prompt.includes("marketing") ||
+          prompt.includes("campaign") ||
+          prompt.includes("promot")
+        ) {
+          return responses["marketing"];
+        } else if (
+          prompt.includes("stock") ||
+          prompt.includes("inventory") ||
+          prompt.includes("low")
+        ) {
+          return responses["stock"];
+        } else if (
+          prompt.includes("customer") ||
+          prompt.includes("behavior") ||
+          prompt.includes("insight")
+        ) {
+          return responses["customer"];
+        } else {
+          return responses["default"];
+        }
       }
     </script>
   </body>
