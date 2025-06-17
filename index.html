@@ -15,10 +15,49 @@
       body {
         font-family: "Inter", sans-serif;
         background-color: #f8fafc;
+        overflow-x: hidden;
       }
 
       .sidebar {
         transition: all 0.3s ease;
+        overflow: visible;
+      }
+
+      /* Profile dropdown styling */
+      #profile-dropdown, #mobile-profile-dropdown {
+        max-width: calc(256px - 20px); /* sidebar width - padding and margins */
+        width: calc(100% - 16px); /* full width minus left/right margins */
+        box-sizing: border-box;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      /* Ensure dropdown content doesn't overflow */
+      #profile-dropdown *, #mobile-profile-dropdown * {
+        max-width: 100%;
+      }
+
+      /* Specific styling for dropdown links and text */
+      #profile-dropdown .truncate, #mobile-profile-dropdown .truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* Sidebar overflow control */
+      .sidebar {
+        position: relative;
+      }
+
+      .sidebar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 1px;
+        height: 100%;
+        background: transparent;
+        z-index: 1;
       }
 
       .chart-container {
@@ -86,10 +125,345 @@
       .nav-item.active {
         background-color: #4338ca;
       }
+
+      /* Onboarding animations */
+      .onboarding-step {
+        animation: slideInRight 0.3s ease-out;
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Onboarding overlay */
+      #onboarding-overlay {
+        backdrop-filter: blur(4px);
+      }
+
+      #onboarding-overlay .bg-white {
+        animation: scaleIn 0.3s ease-out;
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Progress bar animation */
+      #progress-bar {
+        transition: width 0.5s ease-in-out;
+      }
+
+      /* Onboarding icons bounce */
+      .onboarding-step .w-16 {
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+
+      /* Prevent horizontal overflow */
+      .page-content {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      /* Responsive container */
+      @media (max-width: 1280px) {
+        .xl\:grid-cols-4 {
+          grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+      }
     </style>
   </head>
   <body class="bg-gray-50">
-    <div class="flex h-screen overflow-hidden">
+    <!-- Login Page -->
+    <div id="login-page" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600">
+      <div class="max-w-md w-full space-y-8 p-8">
+        <div class="bg-white rounded-xl shadow-2xl p-8">
+          <div class="text-center mb-8">
+            <div class="flex justify-center mb-4">
+              <i class="fas fa-brain text-indigo-600 text-4xl"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900">MarketAI CRM</h2>
+            <p class="text-gray-600 mt-2">Sign in to your account</p>
+          </div>
+          
+          <form id="login-form" class="space-y-6">
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+              <input 
+                id="email" 
+                name="email" 
+                type="email" 
+                autocomplete="email" 
+                required 
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Enter your email"
+                value="john.doe@company.com"
+              />
+            </div>
+            
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+              <input 
+                id="password" 
+                name="password" 
+                type="password" 
+                autocomplete="current-password" 
+                required 
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Enter your password"
+                value="password123"
+              />
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <input 
+                  id="remember-me" 
+                  name="remember-me" 
+                  type="checkbox" 
+                  class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+              </div>
+              
+              <div class="text-sm">
+                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                  Forgot your password?
+                </a>
+              </div>
+            </div>
+            
+            <div>
+              <button 
+                type="submit" 
+                class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+              >
+                <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <i class="fas fa-sign-in-alt text-indigo-500 group-hover:text-indigo-400"></i>
+                </span>
+                Sign in
+              </button>
+            </div>
+          </form>
+          
+          <div class="mt-6">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">Demo Account</span>
+              </div>
+            </div>
+            
+            <div class="mt-3 text-center text-sm text-gray-600">
+              <p>Email: <span class="font-medium">john.doe@company.com</span></p>
+              <p>Password: <span class="font-medium">password123</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onboarding Overlay -->
+    <div id="onboarding-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <!-- Onboarding Header -->
+          <div class="p-6 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <i class="fas fa-brain text-indigo-600 text-2xl"></i>
+                <h2 class="text-xl font-bold text-gray-900">Welcome to MarketAI CRM</h2>
+              </div>
+              <button id="skip-onboarding" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="mt-4">
+              <div class="flex justify-between text-xs text-gray-500 mb-2">
+                <span>Step <span id="current-step">1</span> of <span id="total-steps">5</span></span>
+                <span id="progress-percent">20%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div id="progress-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-300" style="width: 20%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Onboarding Content -->
+          <div class="p-6">
+            <!-- Step 1: Welcome -->
+            <div id="onboarding-step-1" class="onboarding-step">
+              <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-rocket text-indigo-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Get Started with MarketAI CRM</h3>
+                <p class="text-gray-600">Manage all your marketplace operations from one powerful dashboard. Let's take a quick tour!</p>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-circle text-green-500"></i>
+                  <span class="text-sm text-gray-700">Connect multiple marketplaces</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-circle text-green-500"></i>
+                  <span class="text-sm text-gray-700">AI-powered insights and automation</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-circle text-green-500"></i>
+                  <span class="text-sm text-gray-700">Real-time analytics and reporting</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Dashboard -->
+            <div id="onboarding-step-2" class="onboarding-step hidden">
+              <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Your Dashboard</h3>
+                <p class="text-gray-600">Monitor your business performance at a glance with real-time metrics and insights.</p>
+              </div>
+              <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                <div class="grid grid-cols-2 gap-3 text-center">
+                  <div class="bg-white rounded p-3">
+                    <div class="text-lg font-bold text-green-600">Rp 3.2M</div>
+                    <div class="text-xs text-gray-500">Revenue</div>
+                  </div>
+                  <div class="bg-white rounded p-3">
+                    <div class="text-lg font-bold text-blue-600">156</div>
+                    <div class="text-xs text-gray-500">Orders</div>
+                  </div>
+                </div>
+              </div>
+              <p class="text-sm text-gray-600">Track sales, orders, inventory, and customer analytics in real-time.</p>
+            </div>
+
+            <!-- Step 3: Marketplaces -->
+            <div id="onboarding-step-3" class="onboarding-step hidden">
+              <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-store text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Connect Marketplaces</h3>
+                <p class="text-gray-600">Integrate with popular e-commerce platforms to centralize your operations.</p>
+              </div>
+              <div class="space-y-3 mb-4">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div class="flex items-center space-x-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Shopee_logo.svg" alt="Shopee" class="h-6">
+                    <span class="text-sm font-medium">Shopee</span>
+                  </div>
+                  <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Connected</span>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div class="flex items-center space-x-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/Tokopedia.svg" alt="Tokopedia" class="h-6">
+                    <span class="text-sm font-medium">Tokopedia</span>
+                  </div>
+                  <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Connect</span>
+                </div>
+              </div>
+              <p class="text-sm text-gray-600">Click on any marketplace to connect your store and sync inventory automatically.</p>
+            </div>
+
+            <!-- Step 4: AI Assistant -->
+            <div id="onboarding-step-4" class="onboarding-step hidden">
+              <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-robot text-purple-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">AI Assistant</h3>
+                <p class="text-gray-600">Get intelligent insights and recommendations powered by AI to grow your business.</p>
+              </div>
+              <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-robot text-purple-600 text-sm"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm text-gray-700">"Your sales increased by 15% this week! Consider promoting your top-selling products during peak hours."</p>
+                  </div>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <button class="bg-white border border-gray-200 rounded px-3 py-2 text-gray-600">Analyze performance</button>
+                <button class="bg-white border border-gray-200 rounded px-3 py-2 text-gray-600">Marketing tips</button>
+              </div>
+            </div>
+
+            <!-- Step 5: Complete -->
+            <div id="onboarding-step-5" class="onboarding-step hidden">
+              <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-check text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">You're All Set!</h3>
+                <p class="text-gray-600">You're ready to start managing your marketplace business more efficiently.</p>
+              </div>
+              <div class="bg-indigo-50 rounded-lg p-4 mb-4">
+                <h4 class="font-medium text-indigo-900 mb-2">Quick Tips:</h4>
+                <ul class="space-y-1 text-sm text-indigo-700">
+                  <li>• Check your dashboard daily for performance insights</li>
+                  <li>• Connect more marketplaces to increase reach</li>
+                  <li>• Use AI Assistant for data-driven decisions</li>
+                  <li>• Update your profile and preferences in Settings</li>
+                </ul>
+              </div>
+              <p class="text-sm text-gray-600 text-center">Need help? You can always access the help center from the settings menu.</p>
+            </div>
+          </div>
+
+          <!-- Onboarding Footer -->
+          <div class="px-6 py-4 border-t border-gray-200 flex justify-between">
+            <button id="prev-step" class="px-4 py-2 text-gray-600 hover:text-gray-800 disabled:text-gray-400 disabled:cursor-not-allowed" disabled>
+              <i class="fas fa-arrow-left mr-2"></i>Previous
+            </button>
+            <div class="flex space-x-2">
+              <button id="next-step" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
+                Next <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+              <button id="finish-onboarding" class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 hidden">
+                Get Started <i class="fas fa-rocket ml-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="flex h-screen overflow-hidden" style="display: none;">
       <!-- Sidebar Navigation -->
       <div
         class="sidebar bg-indigo-700 text-white w-64 flex-shrink-0 hidden md:block"
@@ -142,15 +516,42 @@
             <span>Settings</span>
           </div>
           <div class="absolute bottom-0 w-full p-4">
-            <div class="flex items-center">
-              <div
-                class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-user"></i>
+            <div class="relative">
+              <div id="profile-menu" class="flex items-center cursor-pointer hover:bg-indigo-600 rounded-lg p-2 -m-2 transition-colors duration-200">
+                <div
+                  class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-user"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="text-sm font-medium">John Doe</div>
+                  <div class="text-xs text-indigo-200">Premium User</div>
+                </div>
+                <div class="ml-2">
+                  <i class="fas fa-chevron-up text-indigo-200 text-xs transition-transform duration-200" id="profile-chevron"></i>
+                </div>
               </div>
-              <div>
-                <div class="text-sm font-medium">John Doe</div>
-                <div class="text-xs text-indigo-200">Premium User</div>
+              
+              <!-- Profile Dropdown -->
+              <div id="profile-dropdown" class="absolute bottom-full left-2 right-2 mb-2 bg-white rounded-lg shadow-xl border border-gray-200 py-2 hidden z-50">
+                <div class="px-3 py-2 border-b border-gray-100">
+                  <div class="text-sm font-medium text-gray-900 truncate">John Doe</div>
+                  <div class="text-xs text-gray-500 truncate">john.doe@company.com</div>
+                </div>
+                <a href="#" class="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class="fas fa-user-circle mr-2 text-gray-400 flex-shrink-0"></i>
+                  <span class="truncate">View Profile</span>
+                </a>
+                <a href="#" class="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class="fas fa-cog mr-2 text-gray-400 flex-shrink-0"></i>
+                  <span class="truncate">Account Settings</span>
+                </a>
+                <div class="border-t border-gray-100 mt-1">
+                  <button id="logout-btn" class="flex items-center w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50">
+                    <i class="fas fa-sign-out-alt mr-2 text-red-500 flex-shrink-0"></i>
+                    <span class="truncate">Sign out</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -223,15 +624,42 @@
             <span>Settings</span>
           </div>
           <div class="absolute bottom-0 w-full p-4">
-            <div class="flex items-center">
-              <div
-                class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-user"></i>
+            <div class="relative">
+              <div id="mobile-profile-menu" class="flex items-center cursor-pointer hover:bg-indigo-600 rounded-lg p-2 -m-2 transition-colors duration-200">
+                <div
+                  class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-user"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="text-sm font-medium">John Doe</div>
+                  <div class="text-xs text-indigo-200">Premium User</div>
+                </div>
+                <div class="ml-2">
+                  <i class="fas fa-chevron-up text-indigo-200 text-xs transition-transform duration-200" id="mobile-profile-chevron"></i>
+                </div>
               </div>
-              <div>
-                <div class="text-sm font-medium">John Doe</div>
-                <div class="text-xs text-indigo-200">Premium User</div>
+              
+              <!-- Mobile Profile Dropdown -->
+              <div id="mobile-profile-dropdown" class="absolute bottom-full left-2 right-2 mb-2 bg-white rounded-lg shadow-xl border border-gray-200 py-2 hidden z-50">
+                <div class="px-3 py-2 border-b border-gray-100">
+                  <div class="text-sm font-medium text-gray-900 truncate">John Doe</div>
+                  <div class="text-xs text-gray-500 truncate">john.doe@company.com</div>
+                </div>
+                <a href="#" class="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class="fas fa-user-circle mr-2 text-gray-400 flex-shrink-0"></i>
+                  <span class="truncate">View Profile</span>
+                </a>
+                <a href="#" class="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class="fas fa-cog mr-2 text-gray-400 flex-shrink-0"></i>
+                  <span class="truncate">Account Settings</span>
+                </a>
+                <div class="border-t border-gray-100 mt-1">
+                  <button id="mobile-logout-btn" class="flex items-center w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50">
+                    <i class="fas fa-sign-out-alt mr-2 text-red-500 flex-shrink-0"></i>
+                    <span class="truncate">Sign out</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -239,7 +667,7 @@
       </div>
 
       <!-- Main Content -->
-      <div class="flex-1 overflow-auto pt-16 md:pt-0">
+      <div class="flex-1 overflow-auto pt-16 md:pt-0 min-w-0">
         <!-- Dashboard Page -->
         <div id="dashboard-page" class="page-content active p-6">
           <!-- Header -->
@@ -1244,7 +1672,7 @@
         </div>
 
         <!-- Settings Page -->
-        <div id="settings-page" class="page-content p-6">
+        <div id="settings-page" class="page-content p-4 md:p-6 max-w-full">
           <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Settings</h2>
             <p class="text-gray-600">
@@ -1252,9 +1680,9 @@
             </p>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
             <!-- Settings Navigation -->
-            <div class="lg:col-span-1">
+            <div class="xl:col-span-1">
               <div class="bg-white rounded-lg shadow p-4">
                 <nav class="space-y-1">
                   <button
@@ -1292,13 +1720,13 @@
             </div>
 
             <!-- Settings Content -->
-            <div class="lg:col-span-3">
+            <div class="xl:col-span-3">
               <!-- Profile Settings -->
               <div class="bg-white rounded-lg shadow p-6 mb-6">
                 <h3 class="text-lg font-semibold mb-4 text-gray-700">
                   Profile Information
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2"
                       >Full Name</label
@@ -1436,6 +1864,40 @@
                 >
                   Manage Subscription →
                 </button>
+              </div>
+
+              <!-- Help & Support -->
+              <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-700">
+                  Help & Support
+                </h3>
+                <div class="space-y-3">
+                  <button
+                    id="restart-onboarding"
+                    class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <div class="flex items-center">
+                      <i class="fas fa-graduation-cap text-indigo-600 mr-3"></i>
+                      <span class="text-sm font-medium text-gray-700">Take Tutorial Again</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                  </button>
+                  <a href="#" class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                    <div class="flex items-center">
+                      <i class="fas fa-question-circle text-green-600 mr-3"></i>
+                      <span class="text-sm font-medium text-gray-700">Help Center</span>
+                    </div>
+                    <i class="fas fa-external-link-alt text-gray-400"></i>
+                  </a>
+                  <a href="#" class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                    <div class="flex items-center">
+                      <i class="fas fa-envelope text-blue-600 mr-3"></i>
+                      <span class="text-sm font-medium text-gray-700">Contact Support</span>
+                    </div>
+                    <i class="fas fa-external-link-alt text-gray-400"></i>
+                  </a>
+                </div>
+              </div>
               </div>
             </div>
           </div>
@@ -1731,6 +2193,210 @@
           return responses["default"];
         }
       }
+
+      // Login functionality
+      document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing in...';
+        submitBtn.disabled = true;
+        
+        // Simulate login delay
+        setTimeout(() => {
+          // Hide login page and show main app
+          document.getElementById('login-page').style.display = 'none';
+          document.getElementById('main-app').style.display = 'flex';
+          
+          // Check if user is new (for demo, we'll assume they are)
+          const isNewUser = !localStorage.getItem('onboarding-completed');
+          if (isNewUser) {
+            // Show onboarding after a brief delay
+            setTimeout(() => {
+              document.getElementById('onboarding-overlay').classList.remove('hidden');
+            }, 500);
+          }
+          
+          // Reset button
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }, 1500);
+      });
+
+      // Onboarding functionality
+      let currentOnboardingStep = 1;
+      const totalSteps = 5;
+
+      function updateOnboardingStep(step) {
+        // Hide all steps
+        document.querySelectorAll('.onboarding-step').forEach(stepEl => {
+          stepEl.classList.add('hidden');
+        });
+        
+        // Show current step
+        document.getElementById(`onboarding-step-${step}`).classList.remove('hidden');
+        
+        // Update progress
+        const progress = (step / totalSteps) * 100;
+        document.getElementById('progress-bar').style.width = progress + '%';
+        document.getElementById('current-step').textContent = step;
+        document.getElementById('progress-percent').textContent = Math.round(progress) + '%';
+        
+        // Update buttons
+        const prevBtn = document.getElementById('prev-step');
+        const nextBtn = document.getElementById('next-step');
+        const finishBtn = document.getElementById('finish-onboarding');
+        
+        prevBtn.disabled = step === 1;
+        
+        if (step === totalSteps) {
+          nextBtn.classList.add('hidden');
+          finishBtn.classList.remove('hidden');
+        } else {
+          nextBtn.classList.remove('hidden');
+          finishBtn.classList.add('hidden');
+        }
+      }
+
+      // Next step button
+      document.getElementById('next-step').addEventListener('click', function() {
+        if (currentOnboardingStep < totalSteps) {
+          currentOnboardingStep++;
+          updateOnboardingStep(currentOnboardingStep);
+        }
+      });
+
+      // Previous step button
+      document.getElementById('prev-step').addEventListener('click', function() {
+        if (currentOnboardingStep > 1) {
+          currentOnboardingStep--;
+          updateOnboardingStep(currentOnboardingStep);
+        }
+      });
+
+      // Skip onboarding
+      document.getElementById('skip-onboarding').addEventListener('click', function() {
+        document.getElementById('onboarding-overlay').classList.add('hidden');
+        localStorage.setItem('onboarding-completed', 'true');
+      });
+
+      // Finish onboarding
+      document.getElementById('finish-onboarding').addEventListener('click', function() {
+        document.getElementById('onboarding-overlay').classList.add('hidden');
+        localStorage.setItem('onboarding-completed', 'true');
+        
+        // Show a welcome message
+        setTimeout(() => {
+          alert('Welcome to MarketAI CRM! 🎉\n\nYou can now start managing your marketplace business. If you need help, check the Settings menu for tutorials and support.');
+                 }, 500);
+       });
+
+             // Restart onboarding from settings
+       document.getElementById('restart-onboarding').addEventListener('click', function() {
+         currentOnboardingStep = 1;
+         updateOnboardingStep(1);
+         document.getElementById('onboarding-overlay').classList.remove('hidden');
+       });
+
+       // Keyboard navigation for onboarding
+       document.addEventListener('keydown', function(e) {
+         const onboardingVisible = !document.getElementById('onboarding-overlay').classList.contains('hidden');
+         
+         if (onboardingVisible) {
+           if (e.key === 'ArrowRight' || e.key === 'Enter') {
+             e.preventDefault();
+             if (currentOnboardingStep < totalSteps) {
+               document.getElementById('next-step').click();
+             } else {
+               document.getElementById('finish-onboarding').click();
+             }
+           } else if (e.key === 'ArrowLeft') {
+             e.preventDefault();
+             if (currentOnboardingStep > 1) {
+               document.getElementById('prev-step').click();
+             }
+           } else if (e.key === 'Escape') {
+             e.preventDefault();
+             document.getElementById('skip-onboarding').click();
+           }
+         }
+       });
+
+      // Profile dropdown functionality
+      document.getElementById('profile-menu').addEventListener('click', function() {
+        const dropdown = document.getElementById('profile-dropdown');
+        const chevron = document.getElementById('profile-chevron');
+        
+        if (dropdown.classList.contains('hidden')) {
+          dropdown.classList.remove('hidden');
+          chevron.classList.add('rotate-180');
+        } else {
+          dropdown.classList.add('hidden');
+          chevron.classList.remove('rotate-180');
+        }
+      });
+
+      // Mobile profile dropdown functionality
+      document.getElementById('mobile-profile-menu').addEventListener('click', function() {
+        const dropdown = document.getElementById('mobile-profile-dropdown');
+        const chevron = document.getElementById('mobile-profile-chevron');
+        
+        if (dropdown.classList.contains('hidden')) {
+          dropdown.classList.remove('hidden');
+          chevron.classList.add('rotate-180');
+        } else {
+          dropdown.classList.add('hidden');
+          chevron.classList.remove('rotate-180');
+        }
+      });
+
+      // Logout functionality
+      function handleLogout() {
+        // Show confirmation dialog
+        const confirmed = confirm('Are you sure you want to sign out?');
+        if (confirmed) {
+          // Hide main app and show login page
+          document.getElementById('main-app').style.display = 'none';
+          document.getElementById('login-page').style.display = 'flex';
+          
+          // Hide any open dropdowns
+          document.getElementById('profile-dropdown').classList.add('hidden');
+          document.getElementById('mobile-profile-dropdown').classList.add('hidden');
+          document.getElementById('profile-chevron').classList.remove('rotate-180');
+          document.getElementById('mobile-profile-chevron').classList.remove('rotate-180');
+          
+          // Reset form if needed
+          document.getElementById('login-form').reset();
+          document.getElementById('email').value = 'john.doe@company.com';
+          document.getElementById('password').value = 'password123';
+        }
+      }
+
+      // Attach logout event listeners
+      document.getElementById('logout-btn').addEventListener('click', handleLogout);
+      document.getElementById('mobile-logout-btn').addEventListener('click', handleLogout);
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function(e) {
+        const profileMenu = document.getElementById('profile-menu');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const mobileProfileMenu = document.getElementById('mobile-profile-menu');
+        const mobileProfileDropdown = document.getElementById('mobile-profile-dropdown');
+        
+        // Close desktop profile dropdown
+        if (!profileMenu.contains(e.target) && !profileDropdown.contains(e.target)) {
+          profileDropdown.classList.add('hidden');
+          document.getElementById('profile-chevron').classList.remove('rotate-180');
+        }
+        
+        // Close mobile profile dropdown
+        if (!mobileProfileMenu.contains(e.target) && !mobileProfileDropdown.contains(e.target)) {
+          mobileProfileDropdown.classList.add('hidden');
+          document.getElementById('mobile-profile-chevron').classList.remove('rotate-180');
+        }
+      });
     </script>
   </body>
 </html>
